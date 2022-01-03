@@ -10,5 +10,6 @@ namespace Birkesoe_Loebet.Models
     {
         public int CourseDistance { get; set; }
         public int StartTime { get; set; }
+        public int RunnerAmount { get; set; }
     }
 }
