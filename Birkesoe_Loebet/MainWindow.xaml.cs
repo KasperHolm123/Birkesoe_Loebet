@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Birkesoe_Loebet.ViewModels;
 
 namespace Birkesoe_Loebet
 {
@@ -20,9 +21,11 @@ namespace Birkesoe_Loebet
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainViewModel model = new MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = model;
         }
     }
 }
