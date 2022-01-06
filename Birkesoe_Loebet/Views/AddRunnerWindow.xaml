@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Birkesoe_Loebet.Views"
         mc:Ignorable="d"
-        Title="AddRunnerWindow" Height="450" Width="800">
+        Title="AddRunnerWindow" Height="600" Width="400">
     <Grid>
-        
+        <Label Content="Navn" HorizontalAlignment="Left" Margin="60,70,0,0" VerticalAlignment="Top"/>
+        <Label Content="Tlf. nr" HorizontalAlignment="Left" Margin="60,130,0,0" VerticalAlignment="Top"/>
+        <Label Content="Email" HorizontalAlignment="Left" Margin="60,190,0,0" VerticalAlignment="Top"/>
+        <Label Content="Adresse" HorizontalAlignment="Left" Margin="60,250,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Rute 1" HorizontalAlignment="Left" Margin="60,310,0,0" VerticalAlignment="Top" IsChecked="{Binding Route1Enabled}"/>
+        <CheckBox Content="Rute 2" HorizontalAlignment="Left" Margin="60,350,0,0" VerticalAlignment="Top" IsChecked="{Binding Route2Enabled}"/>
+        <CheckBox Content="Rute 3" HorizontalAlignment="Left" Margin="60,390,0,0" VerticalAlignment="Top" IsChecked="{Binding Route3Enabled}"/>
+        <TextBox HorizontalAlignment="Left" Margin="60,100,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="60,160,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="60,220,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="60,280,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+
+
     </Grid>
 </Window>
