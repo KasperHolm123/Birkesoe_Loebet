@@ -11,7 +11,7 @@ namespace Birkesoe_Loebet.Models
         public int ID { get; set; }
         public int CourseDistance { get; set; }
         public int StartTime { get; set; }
-        public RunningCourse(int ID)
+        public RunningCourse(int ID = 1)
         {
             this.ID = ID;
         }

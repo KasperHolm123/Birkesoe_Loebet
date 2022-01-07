@@ -20,8 +20,13 @@ namespace Birkesoe_Loebet.ViewModels
         private bool route3Enabled;
         private List<RunningCourse> courses;
 
+        // Modeler som skal bruges i SQL queries
         Runner model = new Runner();
+        RunningCourse courseModel = new RunningCourse();
+
+        // Command til knappen i viewet
         public RelayCommand RegisterRunner;
+        
         private SqlConnection connection;
 
         public RegisterViewModel()
@@ -38,15 +43,16 @@ namespace Birkesoe_Loebet.ViewModels
             try
             {
                 connection.Open();
-                string query = "INSERT INTO Registered (RunnerID)\n" + "VALUES(@RunnerID)";
+                string query = "INSERT INTO Registered (RunnerID, Distance)\n" +
+                               "VALUES ((SELECT RunnerID FROM Runners WHERE RunnerID = @RunnerID), (SELECT Distance FROM [Route] WHERE ID = @Course))";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.Add(CreateParameter("@RunnerID", model.RunnerID, SqlDbType.Int));
-                command.Parameters.Add(CreateParameter("@Name", model.RunnerID, SqlDbType.Int));
+                command.Parameters.Add(CreateParameter("@Course", courseModel.ID, SqlDbType.Int));
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-
+                
             }
             finally
             {
@@ -56,9 +62,10 @@ namespace Birkesoe_Loebet.ViewModels
                 }
             }
         }
-        private void BuildModel() //En 'Runner' model behøves sådan set ikke bruges her, da input allerede gemmes klassens properties
+        private void BuildModel()
         {
             model.RunnerID = RunnerID;
+            courseModel.ID = Course;
         }
         public bool Route1Enabled
         {
