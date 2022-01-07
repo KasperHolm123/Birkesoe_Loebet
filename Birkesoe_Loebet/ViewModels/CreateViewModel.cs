@@ -58,11 +58,15 @@ namespace Birkesoe_Loebet.ViewModels
                 {
                     connection.Close();
                 }
+                GetNumberOfRunners();
             }
         }
         private void BuildModel() //En 'Runner' model behøves sådan set ikke bruges her, da input allerede gemmes klassens properties
         {
             model.Name = Name;
+
+
+
             model.PhoneNumber = PhoneNumber;
             model.RunnerAddress = Address;
             model.RunningCourses = courses;
@@ -135,7 +139,24 @@ namespace Birkesoe_Loebet.ViewModels
         }
         private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
         {
-            string query = "SELECT COUNT(*) FROM Runners";
+            try
+            {
+                connection.Open();
+                string query = "SELECT COUNT(*) FROM Runners";
+                
+                using(SqlCommand command = new SqlCommand(query, connection))
+                {
+                    NumberOfRunners = (int)command.ExecuteScalar() + 99;
+                }
+            }
+            catch
+            {
+                
+            }
+            finally
+            {
+                connection.Close();
+            }
 
         }
         private SqlParameter CreateParameter(string paramName, object value, SqlDbType type)
