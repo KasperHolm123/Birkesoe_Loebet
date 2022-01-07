@@ -15,14 +15,22 @@ namespace Birkesoe_Loebet.ViewModels
     public class MainViewModel
     {
         public RelayCommand CreateUser { get; set; }
+        public RelayCommand RegisterUser { get; set; }
         public MainViewModel()
         {
+            RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
         }
 
         private void OpenCreateWindow()
         {
             AddRunnerWindow window = new AddRunnerWindow();
+            window.ShowDialog();
+        }
+        
+        private void OpenRegisterWindow()
+        {
+            RegisterRunnerWindow window = new RegisterRunnerWindow();
             window.ShowDialog();
         }
     }
