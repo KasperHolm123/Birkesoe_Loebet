@@ -35,6 +35,7 @@ namespace Birkesoe_Loebet.ViewModels
         }
         private void CreateCmd()
         {
+            BuildModel();
             //INSERT INTO query 
             try
             {
@@ -50,6 +51,13 @@ namespace Birkesoe_Loebet.ViewModels
             catch(Exception ex)
             {
                 
+            }
+            finally
+            {
+                if(connection != null)
+                {
+                    connection.Close();
+                }
             }
         }
         private void BuildModel() //En 'Runner' model behøves sådan set ikke bruges her, da input allerede gemmes klassens properties
