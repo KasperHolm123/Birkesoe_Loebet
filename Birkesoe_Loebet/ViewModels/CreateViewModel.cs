@@ -14,6 +14,8 @@ namespace Birkesoe_Loebet.ViewModels
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+
+        public int NumberOfRunners { get; set; }
         private bool route1Enabled;
         private bool route2Enabled;
         private bool route3Enabled;
@@ -29,9 +31,13 @@ namespace Birkesoe_Loebet.ViewModels
         {
             //INSERT INTO query 
         }
-        private void BuildModel()
+        private void BuildModel() //En 'Runner' model behøves sådan set ikke bruges her, da input allerede gemmes klassens properties
         {
-            //Sæt properties for Runner modellen
+            model.Name = Name;
+            model.PhoneNumber = PhoneNumber;
+            model.RunnerAddress = Address;
+            model.RunningCourses = courses;
+            model.Email = Email;
         }
         private bool ValidateInput() //Validerer at formattet af input stemmer
         {
@@ -97,6 +103,11 @@ namespace Birkesoe_Loebet.ViewModels
                     courses[2] = null;
                 }
             }
+        }
+        private void GetNumberOfRunners()
+        {
+            string query = "SELECT COUNT(*) FROM Runners";
+
         }
     }
 }
