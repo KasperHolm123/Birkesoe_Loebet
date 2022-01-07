@@ -8,18 +8,20 @@ using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.ComponentModel;
 
 namespace Birkesoe_Loebet.ViewModels
 {
-    public class CreateViewModel
+    public class CreateViewModel : INotifyPropertyChanged
     {
         //Properties bindet til tekst-felter i UI, her kan vi også evt enforce attributes' domæner. Den vil kun registrere brugeren med et gyldigt tlf-nr f.eks
         public string Name { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public int NumberOfRunners { get; set; }
+        private int numberOfRunners;
         private bool route1Enabled;
         private bool route2Enabled;
         private bool route3Enabled;
@@ -137,6 +139,15 @@ namespace Birkesoe_Loebet.ViewModels
                 }
             }
         }
+        public int NumberOfRunners
+        {
+            get { return numberOfRunners; }
+            set
+            {
+                numberOfRunners = value;
+                OnPropertyChanged("NumberOfRunners");
+            }
+        }
         private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
         {
             try
@@ -168,6 +179,13 @@ namespace Birkesoe_Loebet.ViewModels
                 SqlDbType = type
             };
             return param;
+        }
+        private void OnPropertyChanged(string property)
+        {
+            if(this.PropertyChanged != null)
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
+            }
         }
     }
 }
