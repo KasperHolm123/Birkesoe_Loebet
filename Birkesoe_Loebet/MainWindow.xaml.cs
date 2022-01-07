@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,9 +22,10 @@ namespace Birkesoe_Loebet
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainViewModel model = new MainViewModel();
+        MainViewModel model;
         public MainWindow()
         {
+            model = new MainViewModel();
             InitializeComponent();
             DataContext = model;
         }

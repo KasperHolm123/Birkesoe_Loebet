@@ -8,6 +8,7 @@ using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 
 namespace Birkesoe_Loebet.ViewModels
 {
@@ -25,7 +26,7 @@ namespace Birkesoe_Loebet.ViewModels
         RunningCourse courseModel = new RunningCourse();
 
         // Command til knappen i viewet
-        public RelayCommand RegisterRunner;
+        public RelayCommand RegisterRunner { get; set; }
         
         private SqlConnection connection;
 
@@ -38,6 +39,7 @@ namespace Birkesoe_Loebet.ViewModels
 
         private void RegisterCmd()
         {
+            Trace.WriteLine("yeet");
             BuildModel();
             //INSERT INTO query 
             try

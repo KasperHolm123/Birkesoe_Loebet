@@ -21,7 +21,9 @@ namespace Birkesoe_Loebet.ViewModels
 
         public int NumberOfRunners { get; set; }
         Runner model = new Runner();
+        
         public RelayCommand CreateUser { get; set; }
+
         private SqlConnection connection;
         public CreateViewModel()
         {
