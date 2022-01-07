@@ -14,9 +14,9 @@ namespace Birkesoe_Loebet.Models
     {
         public string Name { get; set; }
         public string RunnerAddress { get; set; }
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public List<string> RunningCourses = new List<string>(); // Hver enkelte løber kan tilmælde sig én eller flere distancer
+        public List<RunningCourse> RunningCourses = new List<RunningCourse>(); // Hver enkelte løber kan tilmælde sig én eller flere distancer
         public int EndTime { get; set; }
 
     }
