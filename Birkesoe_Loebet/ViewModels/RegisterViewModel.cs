@@ -45,16 +45,19 @@ namespace Birkesoe_Loebet.ViewModels
             try
             {
                 connection.Open();
-                string query = "INSERT INTO Registered (RunnerID, Distance)\n" +
-                               "VALUES ((SELECT RunnerID FROM Runners WHERE RunnerID = @RunnerID), (SELECT Distance FROM [Route] WHERE ID = @Course))";
+                string query = "INSERT INTO Registered (RunnerID, Distance, StartTime)\n" +
+                               "VALUES ((SELECT RunnerID FROM Runners WHERE RunnerID = @RunnerID), " +
+                               "(SELECT Distance FROM [Route] WHERE ID = @Course), " +
+                               "(SELECT StartTime FROM [Route] WHERE ID = @Course))";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.Add(CreateParameter("@RunnerID", model.RunnerID, SqlDbType.Int));
                 command.Parameters.Add(CreateParameter("@Course", courseModel.ID, SqlDbType.Int));
+                //command.Parameters.Add(CreateParameter("@StartTime", courseModel.ID, SqlDbType.Int));
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                
+                // Error handling når jeg kommer der til
             }
             finally
             {
@@ -69,63 +72,65 @@ namespace Birkesoe_Loebet.ViewModels
             model.RunnerID = RunnerID;
             courseModel.ID = Course;
         }
-        public bool Route1Enabled
-        {
-            get
-            {
-                return route1Enabled;
-            }
-            set
-            {
-                route1Enabled = value;
-                if (route1Enabled)
-                {
-                    courses[0] = new RunningCourse(1);
-                }
-                else
-                {
-                    courses[0] = null;
-                }
-            }
-        }
-        public bool Route2Enabled
-        {
-            get
-            {
-                return route2Enabled;
-            }
-            set
-            {
-                route2Enabled = value;
-                if (route2Enabled)
-                {
-                    courses[1] = new RunningCourse(2);
-                }
-                else
-                {
-                    courses[1] = null;
-                }
-            }
-        }
-        public bool Route3Enabled
-        {
-            get
-            {
-                return route3Enabled;
-            }
-            set
-            {
-                route3Enabled = value;
-                if (route3Enabled)
-                {
-                    courses[2] = new RunningCourse(3);
-                }
-                else
-                {
-                    courses[2] = null;
-                }
-            }
-        }
+        #region gammelt kode
+        //public bool Route1Enabled
+        //{
+        //    get
+        //    {
+        //        return route1Enabled;
+        //    }
+        //    set
+        //    {
+        //        route1Enabled = value;
+        //        if (route1Enabled)
+        //        {
+        //            courses[0] = new RunningCourse(1);
+        //        }
+        //        else
+        //        {
+        //            courses[0] = null;
+        //        }
+        //    }
+        //}
+        //public bool Route2Enabled
+        //{
+        //    get
+        //    {
+        //        return route2Enabled;
+        //    }
+        //    set
+        //    {
+        //        route2Enabled = value;
+        //        if (route2Enabled)
+        //        {
+        //            courses[1] = new RunningCourse(2);
+        //        }
+        //        else
+        //        {
+        //            courses[1] = null;
+        //        }
+        //    }
+        //}
+        //public bool Route3Enabled
+        //{
+        //    get
+        //    {
+        //        return route3Enabled;
+        //    }
+        //    set
+        //    {
+        //        route3Enabled = value;
+        //        if (route3Enabled)
+        //        {
+        //            courses[2] = new RunningCourse(3);
+        //        }
+        //        else
+        //        {
+        //            courses[2] = null;
+        //        }
+        //    }
+        //}
+        #endregion
 
         private SqlParameter CreateParameter(string paramName, object value, SqlDbType type)
         {
