@@ -9,6 +9,11 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Windows.Input;
 using Birkesoe_Loebet.Views;
+using System.Data.Sql;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
+using Birkesoe_Loebet.Models;
 
 namespace Birkesoe_Loebet.ViewModels
 {
@@ -16,8 +21,11 @@ namespace Birkesoe_Loebet.ViewModels
     {
         public RelayCommand CreateUser { get; set; }
         public RelayCommand RegisterUser { get; set; }
+
+        public SqlConnection connection;
         public MainViewModel()
         {
+            connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
         }
@@ -27,7 +35,21 @@ namespace Birkesoe_Loebet.ViewModels
             AddRunnerWindow window = new AddRunnerWindow();
             window.ShowDialog();
         }
-        
+
+        private void GetRunners()
+        {
+            try
+            {
+                connection.Open();
+                string query = "";
+                SqlCommand command = new SqlCommand(query, connection);
+            }
+            catch
+            {
+
+            }
+        }
+
         private void OpenRegisterWindow()
         {
             RegisterRunnerWindow window = new RegisterRunnerWindow();

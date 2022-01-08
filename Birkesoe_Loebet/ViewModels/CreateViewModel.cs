@@ -8,18 +8,22 @@ using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.ComponentModel;
 
 namespace Birkesoe_Loebet.ViewModels
 {
-    public class CreateViewModel
+    public class CreateViewModel : INotifyPropertyChanged
     {
         //Properties bindet til tekst-felter i UI, her kan vi også evt enforce attributes' domæner. Den vil kun registrere brugeren med et gyldigt tlf-nr f.eks
         public string Name { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         public int NumberOfRunners { get; set; }
+
         Runner model = new Runner();
         
         public RelayCommand CreateUser { get; set; }
@@ -55,11 +59,15 @@ namespace Birkesoe_Loebet.ViewModels
                 {
                     connection.Close();
                 }
+                GetNumberOfRunners();
             }
         }
         private void BuildModel() //En 'Runner' model behøves sådan set ikke bruges her, da input allerede gemmes klassens properties
         {
             model.Name = Name;
+
+
+
             model.PhoneNumber = PhoneNumber;
             model.RunnerAddress = Address;
             model.Email = Email;
@@ -72,9 +80,27 @@ namespace Birkesoe_Loebet.ViewModels
             }
             else return false;
         }
+
         private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
         {
-            string query = "SELECT COUNT(*) FROM Runners";
+            try
+            {
+                connection.Open();
+                string query = "SELECT COUNT(*) FROM Runners";
+                
+                using(SqlCommand command = new SqlCommand(query, connection))
+                {
+                    NumberOfRunners = (int)command.ExecuteScalar() + 99;
+                }
+            }
+            catch
+            {
+                
+            }
+            finally
+            {
+                connection.Close();
+            }
 
         }
         private SqlParameter CreateParameter(string paramName, object value, SqlDbType type)
@@ -86,6 +112,13 @@ namespace Birkesoe_Loebet.ViewModels
                 SqlDbType = type
             };
             return param;
+        }
+        private void OnPropertyChanged(string property)
+        {
+            if(this.PropertyChanged != null)
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
+            }
         }
     }
 }
