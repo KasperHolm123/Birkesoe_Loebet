@@ -21,19 +21,19 @@ namespace Birkesoe_Loebet.ViewModels
         public string Email { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-
         public int NumberOfRunners { get; set; }
 
         Runner model = new Runner();
         
         public RelayCommand CreateUser { get; set; }
-
         private SqlConnection connection;
+
         public CreateViewModel()
         {
             CreateUser = new RelayCommand(p => CreateCmd());
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
         }
+
         private void CreateCmd()
         {
             BuildModel();
@@ -62,6 +62,7 @@ namespace Birkesoe_Loebet.ViewModels
                 GetNumberOfRunners();
             }
         }
+
         private void BuildModel() //En 'Runner' model behøves sådan set ikke bruges her, da input allerede gemmes klassens properties
         {
             model.Name = Name;
@@ -72,6 +73,7 @@ namespace Birkesoe_Loebet.ViewModels
             model.RunnerAddress = Address;
             model.Email = Email;
         }
+
         private bool ValidateInput() //Validerer at formattet af input stemmer
         {
             if (PhoneNumber.Length == 8 && Name.Length < 40)
@@ -103,6 +105,7 @@ namespace Birkesoe_Loebet.ViewModels
             }
 
         }
+
         private SqlParameter CreateParameter(string paramName, object value, SqlDbType type)
         {
             SqlParameter param = new SqlParameter
@@ -113,6 +116,7 @@ namespace Birkesoe_Loebet.ViewModels
             };
             return param;
         }
+
         private void OnPropertyChanged(string property)
         {
             if(this.PropertyChanged != null)
