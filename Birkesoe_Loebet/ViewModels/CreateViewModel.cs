@@ -21,17 +21,16 @@ namespace Birkesoe_Loebet.ViewModels
         public string Email { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private int numberOfRunners;
-        private bool route1Enabled;
-        private bool route2Enabled;
-        private bool route3Enabled;
-        private List<RunningCourse> courses;
+
+        public int NumberOfRunners { get; set; }
+
         Runner model = new Runner();
+        
         public RelayCommand CreateUser { get; set; }
+
         private SqlConnection connection;
         public CreateViewModel()
         {
-            courses = new List<RunningCourse>();
             CreateUser = new RelayCommand(p => CreateCmd());
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
         }
@@ -71,7 +70,6 @@ namespace Birkesoe_Loebet.ViewModels
 
             model.PhoneNumber = PhoneNumber;
             model.RunnerAddress = Address;
-            model.RunningCourses = courses;
             model.Email = Email;
         }
         private bool ValidateInput() //Validerer at formattet af input stemmer
@@ -82,72 +80,7 @@ namespace Birkesoe_Loebet.ViewModels
             }
             else return false;
         }
-        public bool Route1Enabled
-        {
-            get
-            {
-                return route1Enabled;
-            }
-            set
-            {
-                route1Enabled = value;
-                if (route1Enabled)
-                {
-                    courses[0] = new RunningCourse(10, 10);
-                }
-                else
-                {
-                    courses[0] = null;
-                }
-            }
-        }
-        public bool Route2Enabled
-        {
-            get
-            {
-                return route2Enabled;
-            }
-            set
-            {
-                route2Enabled = value;
-                if (route2Enabled)
-                {
-                    courses[1] = new RunningCourse(10, 10);
-                }
-                else
-                {
-                    courses[1] = null;
-                }
-            }
-        }
-        public bool Route3Enabled
-        {
-            get
-            {
-                return route3Enabled;
-            }
-            set
-            {
-                route3Enabled = value;
-                if (route3Enabled)
-                {
-                    courses[2] = new RunningCourse(10, 10);
-                }
-                else
-                {
-                    courses[2] = null;
-                }
-            }
-        }
-        public int NumberOfRunners
-        {
-            get { return numberOfRunners; }
-            set
-            {
-                numberOfRunners = value;
-                OnPropertyChanged("NumberOfRunners");
-            }
-        }
+
         private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
         {
             try

@@ -11,9 +11,6 @@
         <Label Content="Tlf. nr" HorizontalAlignment="Left" Margin="60,130,0,0" VerticalAlignment="Top"/>
         <Label Content="Email" HorizontalAlignment="Left" Margin="60,190,0,0" VerticalAlignment="Top"/>
         <Label Content="Adresse" HorizontalAlignment="Left" Margin="60,250,0,0" VerticalAlignment="Top"/>
-        <CheckBox Content="Rute 1" HorizontalAlignment="Left" Margin="60,310,0,0" VerticalAlignment="Top" IsChecked="{Binding Route1Enabled}"/>
-        <CheckBox Content="Rute 2" HorizontalAlignment="Left" Margin="60,350,0,0" VerticalAlignment="Top" IsChecked="{Binding Route2Enabled}"/>
-        <CheckBox Content="Rute 3" HorizontalAlignment="Left" Margin="60,390,0,0" VerticalAlignment="Top" IsChecked="{Binding Route3Enabled}"/>
         <TextBox HorizontalAlignment="Left" Margin="60,100,0,0" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Margin="60,160,0,0" Text="{Binding Path=PhoneNumber, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Margin="60,220,0,0" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>

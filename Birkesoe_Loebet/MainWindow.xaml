@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="161,174,0,0" VerticalAlignment="Top" Command="{Binding Path=CreateUser}"/>
+        <Button Content="create window" HorizontalAlignment="Left" Margin="161,174,0,0" VerticalAlignment="Top" Command="{Binding Path=CreateUser}"/>
+        <Button Content="register window" HorizontalAlignment="Left" Margin="319,174,0,0" VerticalAlignment="Top" Command="{Binding Path=RegisterUser}"/>
 
     </Grid>
 </Window>
