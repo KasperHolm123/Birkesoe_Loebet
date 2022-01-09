@@ -17,14 +17,28 @@ using Birkesoe_Loebet.Models;
 
 namespace Birkesoe_Loebet.ViewModels
 {
+    public delegate void WarningMessage(object sender, MessageEventArgs e);
+
+    public class MessageEventArgs
+    {
+        public string Message { get; private set; }
+
+        public MessageEventArgs(string message)
+        {
+            Message = message;
+        }
+    }
+
     public class MainViewModel
     {
         public RelayCommand CreateUser { get; set; }
+        public RelayCommand RegisterUser { get; set; }
 
         public SqlConnection connection;
         public MainViewModel()
         {
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
+            RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
         }
 
@@ -33,6 +47,7 @@ namespace Birkesoe_Loebet.ViewModels
             AddRunnerWindow window = new AddRunnerWindow();
             window.ShowDialog();
         }
+
         private void GetRunners()
         {
             try
@@ -45,6 +60,12 @@ namespace Birkesoe_Loebet.ViewModels
             {
 
             }
+        }
+
+        private void OpenRegisterWindow()
+        {
+            RegisterRunnerWindow window = new RegisterRunnerWindow();
+            window.ShowDialog();
         }
     }
 

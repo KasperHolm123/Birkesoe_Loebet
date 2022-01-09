@@ -14,6 +14,7 @@ namespace Birkesoe_Loebet.ViewModels
 {
     public class CreateViewModel : INotifyPropertyChanged
     {
+        public event WarningMessage WarningHandler;
         //Properties bindet til tekst-felter i UI, her kan vi også evt enforce attributes' domæner. Den vil kun registrere brugeren med et gyldigt tlf-nr f.eks
         public string Name { get; set; }
         public string Address { get; set; }
@@ -21,20 +22,19 @@ namespace Birkesoe_Loebet.ViewModels
         public string Email { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private int numberOfRunners;
-        private bool route1Enabled;
-        private bool route2Enabled;
-        private bool route3Enabled;
-        private List<RunningCourse> courses;
+        public int NumberOfRunners { get; set; }
+
         Runner model = new Runner();
+        
         public RelayCommand CreateUser { get; set; }
         private SqlConnection connection;
+
         public CreateViewModel()
         {
-            courses = new List<RunningCourse>();
             CreateUser = new RelayCommand(p => CreateCmd());
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
         }
+
         private void CreateCmd()
         {
             BuildModel();
@@ -44,7 +44,7 @@ namespace Birkesoe_Loebet.ViewModels
                 connection.Open();
                 string query = "INSERT INTO Runners ([Name], Phone, Email, [Address])\n" + "VALUES(@Name, @Phone, @Email, @Address)";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.Add(CreateParameter("@Name", model.Name.Trim(), SqlDbType.NVarChar));
+                command.Parameters.Add(CreateParameter("@Name", model.Name.Trim(), SqlDbType.NVarChar)); // NullReferenceException
                 command.Parameters.Add(CreateParameter("@Phone", model.PhoneNumber.Trim(), SqlDbType.NVarChar));
                 command.Parameters.Add(CreateParameter("@Email", model.Email.Trim(), SqlDbType.NVarChar));
                 command.Parameters.Add(CreateParameter("@Address", model.RunnerAddress.Trim(), SqlDbType.NVarChar));
@@ -52,7 +52,7 @@ namespace Birkesoe_Loebet.ViewModels
             }
             catch(Exception ex)
             {
-                
+                OnWarning(ex.Message);
             }
             finally
             {
@@ -63,17 +63,15 @@ namespace Birkesoe_Loebet.ViewModels
                 GetNumberOfRunners();
             }
         }
+
         private void BuildModel() //En 'Runner' model behøves sådan set ikke bruges her, da input allerede gemmes klassens properties
         {
             model.Name = Name;
-
-
-
             model.PhoneNumber = PhoneNumber;
             model.RunnerAddress = Address;
-            model.RunningCourses = courses;
             model.Email = Email;
         }
+
         private bool ValidateInput() //Validerer at formattet af input stemmer
         {
             if (PhoneNumber.Length == 8 && Name.Length < 40)
@@ -82,72 +80,7 @@ namespace Birkesoe_Loebet.ViewModels
             }
             else return false;
         }
-        public bool Route1Enabled
-        {
-            get
-            {
-                return route1Enabled;
-            }
-            set
-            {
-                route1Enabled = value;
-                if (route1Enabled)
-                {
-                    courses[0] = new RunningCourse(10, 10);
-                }
-                else
-                {
-                    courses[0] = null;
-                }
-            }
-        }
-        public bool Route2Enabled
-        {
-            get
-            {
-                return route2Enabled;
-            }
-            set
-            {
-                route2Enabled = value;
-                if (route2Enabled)
-                {
-                    courses[1] = new RunningCourse(10, 10);
-                }
-                else
-                {
-                    courses[1] = null;
-                }
-            }
-        }
-        public bool Route3Enabled
-        {
-            get
-            {
-                return route3Enabled;
-            }
-            set
-            {
-                route3Enabled = value;
-                if (route3Enabled)
-                {
-                    courses[2] = new RunningCourse(10, 10);
-                }
-                else
-                {
-                    courses[2] = null;
-                }
-            }
-        }
-        public int NumberOfRunners
-        {
-            get { return numberOfRunners; }
-            set
-            {
-                numberOfRunners = value;
-                OnPropertyChanged("NumberOfRunners");
-            }
-        }
+
         private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
         {
             try
@@ -170,6 +103,7 @@ namespace Birkesoe_Loebet.ViewModels
             }
 
         }
+
         private SqlParameter CreateParameter(string paramName, object value, SqlDbType type)
         {
             SqlParameter param = new SqlParameter
@@ -180,12 +114,17 @@ namespace Birkesoe_Loebet.ViewModels
             };
             return param;
         }
+
         private void OnPropertyChanged(string property)
         {
             if(this.PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
             }
+        }
+        public void OnWarning(string message)
+        {
+            if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
         }
     }
 }
