@@ -20,12 +20,16 @@ namespace Birkesoe_Loebet.Views
     /// </summary>
     public partial class RegisterRunnerWindow : Window
     {
-        RegisterViewModel RegisterVM;
+        RegisterViewModel model;
         public RegisterRunnerWindow()
         {
-            RegisterVM = new RegisterViewModel();
+            model = new RegisterViewModel();
             InitializeComponent();
-            DataContext = RegisterVM;
+            model.WarningHandler += delegate (object sender, MessageEventArgs e)
+            {
+                MessageBox.Show(e.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            };
+            DataContext = model;
         }
     }
 }

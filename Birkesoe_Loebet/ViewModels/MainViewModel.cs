@@ -17,6 +17,18 @@ using Birkesoe_Loebet.Models;
 
 namespace Birkesoe_Loebet.ViewModels
 {
+    public delegate void WarningMessage(object sender, MessageEventArgs e);
+
+    public class MessageEventArgs
+    {
+        public string Message { get; private set; }
+
+        public MessageEventArgs(string message)
+        {
+            Message = message;
+        }
+    }
+
     public class MainViewModel
     {
         public RelayCommand CreateUser { get; set; }
