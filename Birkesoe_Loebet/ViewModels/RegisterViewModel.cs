@@ -14,6 +14,7 @@ namespace Birkesoe_Loebet.ViewModels
 {
     class RegisterViewModel
     {
+        public event WarningMessage WarningHandler; // Event der håndterer advarsler
         public int RunnerID { get; set; }
         public int Course { get; set; }
         private bool route1Enabled;
@@ -57,7 +58,7 @@ namespace Birkesoe_Loebet.ViewModels
             }
             catch (Exception ex)
             {
-                // Error handling når jeg kommer der til
+                OnWarning(ex.Message);
             }
             finally
             {
@@ -141,6 +142,10 @@ namespace Birkesoe_Loebet.ViewModels
                 SqlDbType = type
             };
             return param;
+        }
+        public void OnWarning(string message)
+        {
+            if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
         }
     }
 }

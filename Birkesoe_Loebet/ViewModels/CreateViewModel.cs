@@ -14,6 +14,7 @@ namespace Birkesoe_Loebet.ViewModels
 {
     public class CreateViewModel : INotifyPropertyChanged
     {
+        public event WarningMessage WarningHandler;
         //Properties bindet til tekst-felter i UI, her kan vi også evt enforce attributes' domæner. Den vil kun registrere brugeren med et gyldigt tlf-nr f.eks
         public string Name { get; set; }
         public string Address { get; set; }
@@ -26,7 +27,6 @@ namespace Birkesoe_Loebet.ViewModels
         Runner model = new Runner();
         
         public RelayCommand CreateUser { get; set; }
-
         private SqlConnection connection;
 
         public CreateViewModel()
@@ -44,7 +44,7 @@ namespace Birkesoe_Loebet.ViewModels
                 connection.Open();
                 string query = "INSERT INTO Runners ([Name], Phone, Email, [Address])\n" + "VALUES(@Name, @Phone, @Email, @Address)";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.Add(CreateParameter("@Name", model.Name.Trim(), SqlDbType.NVarChar));
+                command.Parameters.Add(CreateParameter("@Name", model.Name.Trim(), SqlDbType.NVarChar)); // NullReferenceException
                 command.Parameters.Add(CreateParameter("@Phone", model.PhoneNumber.Trim(), SqlDbType.NVarChar));
                 command.Parameters.Add(CreateParameter("@Email", model.Email.Trim(), SqlDbType.NVarChar));
                 command.Parameters.Add(CreateParameter("@Address", model.RunnerAddress.Trim(), SqlDbType.NVarChar));
@@ -52,7 +52,7 @@ namespace Birkesoe_Loebet.ViewModels
             }
             catch(Exception ex)
             {
-                
+                OnWarning(ex.Message);
             }
             finally
             {
@@ -121,6 +121,10 @@ namespace Birkesoe_Loebet.ViewModels
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
             }
+        }
+        public void OnWarning(string message)
+        {
+            if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
         }
     }
 }
