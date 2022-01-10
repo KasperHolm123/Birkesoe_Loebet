@@ -31,7 +31,7 @@ namespace Birkesoe_Loebet.ViewModels
 
         public CreateViewModel()
         {
-            CreateUser = new RelayCommand(p => CreateCmd());
+            CreateUser = new RelayCommand(p => CreateCmd(), p => CanExecute());
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
         }
 
@@ -67,9 +67,6 @@ namespace Birkesoe_Loebet.ViewModels
         private void BuildModel() //En 'Runner' model behøves sådan set ikke bruges her, da input allerede gemmes klassens properties
         {
             model.Name = Name;
-
-
-
             model.PhoneNumber = PhoneNumber;
             model.RunnerAddress = Address;
             model.Email = Email;
@@ -128,6 +125,15 @@ namespace Birkesoe_Loebet.ViewModels
         public void OnWarning(string message)
         {
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
+        }
+
+        public bool CanExecute()
+        {
+            if (Name == null || PhoneNumber == null || Address == null || Email == null)
+            { 
+                return false; 
+            }
+            return true;
         }
     }
 }
