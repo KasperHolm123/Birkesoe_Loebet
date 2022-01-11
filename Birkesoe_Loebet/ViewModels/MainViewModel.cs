@@ -32,16 +32,20 @@ namespace Birkesoe_Loebet.ViewModels
     public class MainViewModel
     {
         public event WarningMessage WarningHandler;
-        public ObservableCollection<Runner> runners { get; set; }
+        private int RouteID = 1;
+        public ObservableCollection<Runner> Runners { get; set; }
         public RelayCommand CreateUser { get; set; }
         public RelayCommand RegisterUser { get; set; }
-
+        public RelayCommand SetCmd { get; set; }
         public SqlConnection connection;
         public MainViewModel()
-        { 
+        {
+            Runners = new ObservableCollection<Runner>();
+            Runners.Add(new Runner(new PropertyChangedEventHandler(Runner_PropertyChanged), "Roy", "Dåsbjergvej 46", "20235775", "jklausen9@gmail.com", new RunningCourse()));
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
+            SetCmd = new RelayCommand(p => SetRoute((int)p));
         }
 
         private void OpenCreateWindow()
@@ -69,13 +73,6 @@ namespace Birkesoe_Loebet.ViewModels
             RegisterRunnerWindow window = new RegisterRunnerWindow();
             window.ShowDialog();
         }
-        private void RegisterDelegates() //Overflødig, passes ind i constructor i stedet, når runner-model buildes  (Ikke lavet endnu tho)
-        {
-            foreach (Runner runner in runners)
-            {
-                runner.PropertyChanged += new PropertyChangedEventHandler(Runner_PropertyChanged);
-            }
-        }
 
         private void Runner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -89,8 +86,8 @@ namespace Birkesoe_Loebet.ViewModels
                 connection.Open();
                 string query = "UPDATE Registered\n" + "SET EndTime = @EndTime\n" + "WHERE RunnerID = @RunnerID AND ID = @ID";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.Add(CreateParameter("@EndTime", runner.EndTime, SqlDbType.Int));
-                command.Parameters.Add(CreateParameter("@Distance", runner.course.ID, SqlDbType.Int));
+                command.Parameters.Add(CreateParameter("@EndTime", runner.EndTime, SqlDbType.Time));
+                command.Parameters.Add(CreateParameter("@Distance", runner.Course.ID, SqlDbType.Int));
                 command.Parameters.Add(CreateParameter("@RunnerID", runner.RunnerID, SqlDbType.Int));
                 command.ExecuteNonQuery();
             }
@@ -119,6 +116,10 @@ namespace Birkesoe_Loebet.ViewModels
         public void OnWarning(string message)
         {
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
+        }
+        private void SetRoute(int id)
+        {
+            RouteID = id;
         }
     }
 

@@ -19,29 +19,40 @@ namespace Birkesoe_Loebet.Models
         public string RunnerAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public List<RunningCourse> RunningCourses = new List<RunningCourse>(); // Hver enkelte løber kan tilmælde sig én eller flere distancer
-        private int endTime;
+        private string result;
+        public List<RunningCourse> RunningCourses = new List<RunningCourse>(); // Hver enkelte løber kan tilmelde sig én eller flere distancer
+        private TimeSpan endTime;
         public int RunnerID { get; set; }
-        public RunningCourse course;
-        public Runner(PropertyChangedEventHandler eventHandler, string name, string address, string phone, string email) //Build Runner model
+        public RunningCourse Course { get; set; }
+        public Runner(PropertyChangedEventHandler eventHandler, string name, string address, string phone, string email, RunningCourse course) //Build Runner model
         {
             PropertyChanged += eventHandler;
             Name = name;
             RunnerAddress = address;
             PhoneNumber = phone;
             Email = email;
+            Course = course;
+            endTime = new TimeSpan(10, 14, 56);
         }
         public Runner()
         {
-
+            
         }
-        public int EndTime
+        public string EndTime
         {
-            get { return endTime; }
+            get { return endTime.ToString(); }
             set
             {
-                endTime = value;
+                endTime = TimeSpan.Parse(value);
                 OnPropertyChanged("EndTime");
+            }
+        }
+        public string Result
+        {
+            get
+            {
+                TimeSpan dateDifference = endTime.Subtract(TimeSpan.Parse(Course.StartTime));
+                return dateDifference.ToString();
             }
         }
         private void OnPropertyChanged(string property)
