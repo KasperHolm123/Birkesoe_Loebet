@@ -31,12 +31,14 @@ namespace Birkesoe_Loebet.ViewModels
 
     public class MainViewModel
     {
+        public event WarningMessage WarningHandler;
+        public ObservableCollection<Runner> runners { get; set; }
         public RelayCommand CreateUser { get; set; }
         public RelayCommand RegisterUser { get; set; }
 
         public SqlConnection connection;
         public MainViewModel()
-        {
+        { 
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
@@ -66,6 +68,57 @@ namespace Birkesoe_Loebet.ViewModels
         {
             RegisterRunnerWindow window = new RegisterRunnerWindow();
             window.ShowDialog();
+        }
+        private void RegisterDelegates() //Overflødig, passes ind i constructor i stedet, når runner-model buildes  (Ikke lavet endnu tho)
+        {
+            foreach (Runner runner in runners)
+            {
+                runner.PropertyChanged += new PropertyChangedEventHandler(Runner_PropertyChanged);
+            }
+        }
+
+        private void Runner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Runner runner = new Runner();
+            if(sender is Runner)
+            {
+                runner = (Runner)sender;
+            }
+            try
+            {
+                connection.Open();
+                string query = "UPDATE Registered\n" + "SET EndTime = @EndTime\n" + "WHERE RunnerID = @RunnerID AND ID = @ID";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.Add(CreateParameter("@EndTime", runner.EndTime, SqlDbType.Int));
+                command.Parameters.Add(CreateParameter("@Distance", runner.course.ID, SqlDbType.Int));
+                command.Parameters.Add(CreateParameter("@RunnerID", runner.RunnerID, SqlDbType.Int));
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                OnWarning(ex.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                {
+                    connection.Close();
+                }
+            }
+        }
+        private SqlParameter CreateParameter(string paramName, object value, SqlDbType type)
+        {
+            SqlParameter param = new SqlParameter
+            {
+                ParameterName = paramName,
+                Value = value,
+                SqlDbType = type
+            };
+            return param;
+        }
+        public void OnWarning(string message)
+        {
+            if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
         }
     }
 

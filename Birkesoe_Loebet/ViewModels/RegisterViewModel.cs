@@ -20,7 +20,7 @@ namespace Birkesoe_Loebet.ViewModels
         private bool route1Enabled;
         private bool route2Enabled;
         private bool route3Enabled;
-        private List<RunningCourse> courses;
+        private List<RunningCourse> courses; //Brugeren skal på en eller anden måde kunne se hvilke ruter som er valgt før det registreres
 
         // Modeler som skal bruges i SQL queries
         Runner model = new Runner();

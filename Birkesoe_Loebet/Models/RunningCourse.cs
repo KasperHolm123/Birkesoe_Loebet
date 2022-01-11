@@ -9,7 +9,7 @@ namespace Birkesoe_Loebet.Models
     public class RunningCourse
     {
         public int ID { get; set; }
-        public int CourseDistance { get; set; }
+        public decimal CourseDistance { get; set; }
         public int StartTime { get; set; }
         public RunningCourse(int ID = 1, int startTime = 1)
         {
