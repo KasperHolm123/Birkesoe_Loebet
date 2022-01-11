@@ -24,6 +24,8 @@ namespace Birkesoe_Loebet.ViewModels
         // GetRunners() som indsætter alle RunnerID'er fra databasen ind i en list eller array.
         // Denne liste bruges så til at tjekke om hvad der er skrevet ind i textbox i viewet er en gyldig værdi.
         private List<RunningCourse> registeredRunnerID;
+      
+        private List<RunningCourse> courses; //Brugeren skal på en eller anden måde kunne se hvilke ruter som er valgt før det registreres
 
         // Modeler som skal bruges i SQL queries
         Runner model = new Runner();
