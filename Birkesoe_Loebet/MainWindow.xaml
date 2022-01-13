@@ -11,10 +11,10 @@
         <Button Content="register window" HorizontalAlignment="Left" Margin="50,25,0,0" VerticalAlignment="Top" Command="{Binding Path=RegisterUser}"/>
         <DataGrid Margin="100,100,100,100" ItemsSource="{Binding Runners}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="RunnerID" Binding="{Binding RunnerID}"/>
-                <DataGridTextColumn Header="Distance" Binding="{Binding Course.CourseDistance}"/>
-                <DataGridTextColumn Header="Start time" Binding="{Binding Course.StartTime}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="RunnerID" Binding="{Binding RunnerID}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Distance" Binding="{Binding Course.CourseDistance}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Start time" Binding="{Binding Course.StartTime}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="End time" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -27,7 +27,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Result" Binding="{Binding Result}"/>
+                <DataGridTextColumn Header="Result" Binding="{Binding Result}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <Menu Width="40" Height="20" Margin="257,50,0,131" HorizontalAlignment="Left" VerticalAlignment="Top" >
@@ -35,7 +35,7 @@
                 <MenuItem Header="Rute 1" Command="{Binding Path=SetCmd}" CommandParameter="1" />
                 <MenuItem Header="Rute 2" Command="{Binding Path=SetCmd}" CommandParameter="2"/>
                 <Separator />
-                <MenuItem Header="Rute 2" Command="{Binding Path=SetCmd}" CommandParameter="3"/>
+                <MenuItem Header="Rute 3" Command="{Binding Path=SetCmd}" CommandParameter="3"/>
             </MenuItem>
         </Menu>
     </Grid>

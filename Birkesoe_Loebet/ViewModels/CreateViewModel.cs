@@ -22,7 +22,7 @@ namespace Birkesoe_Loebet.ViewModels
         public string Email { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int NumberOfRunners { get; set; }
+        private int numberOfRunners;
 
         Runner model = new Runner();
         
@@ -114,7 +114,15 @@ namespace Birkesoe_Loebet.ViewModels
             };
             return param;
         }
-
+        public int NumberOfRunners
+        {
+            get { return numberOfRunners; }
+            set
+            {
+                numberOfRunners = value;
+                OnPropertyChanged("NumberOfRunners");
+            }
+        }
         private void OnPropertyChanged(string property)
         {
             if(this.PropertyChanged != null)
