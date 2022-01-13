@@ -7,9 +7,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="create window" HorizontalAlignment="Left" Margin="50,50,0,0" VerticalAlignment="Top" Command="{Binding Path=CreateUser}"/>
-        <Button Content="register window" HorizontalAlignment="Left" Margin="50,25,0,0" VerticalAlignment="Top" Command="{Binding Path=RegisterUser}"/>
-        <DataGrid Margin="100,100,100,100" ItemsSource="{Binding Runners}" AutoGenerateColumns="False">
+        <!-- Grid columns-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Menu -->
+        <Menu Height="20" VerticalAlignment="Top" Panel.ZIndex="1">
+            <MenuItem Header="Funktioner">
+                <MenuItem Header="Opret løber" Command="{Binding Path=CreateUser}"/>
+                <MenuItem Header="Registrer rute" Command="{Binding Path=RegisterUser}"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="MenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        
+        <!-- Interactive UI -->
+        <Label Grid.Column="1" Content="temp" Background="LightGray" Margin="0,0,0,0"/>
+        <DataGrid Grid.Column="1" Margin="20,40,20,20" ItemsSource="{Binding Runners}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="RunnerID" Binding="{Binding RunnerID}" IsReadOnly="True"/>
@@ -30,13 +46,15 @@
                 <DataGridTextColumn Header="Result" Binding="{Binding Result}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Menu Width="40" Height="20" Margin="257,50,0,131" HorizontalAlignment="Left" VerticalAlignment="Top" >
-            <MenuItem Header="Ruter">
-                <MenuItem Header="Rute 1" Command="{Binding Path=SetCmd}" CommandParameter="1" />
-                <MenuItem Header="Rute 2" Command="{Binding Path=SetCmd}" CommandParameter="2"/>
-                <Separator />
-                <MenuItem Header="Rute 3" Command="{Binding Path=SetCmd}" CommandParameter="3"/>
-            </MenuItem>
-        </Menu>
+
+        <ScrollViewer Height="434" VerticalAlignment="Bottom">
+            <StackPanel>
+                <Label Content="Ruter" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0"/>
+                <Button Content="Rute 1: 2km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="1"/>
+                <Button Content="Rute 2: 5km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="2"/>
+                <Button Content="Rute 3: 9km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="3"/>
+            </StackPanel>
+        </ScrollViewer>
+        
     </Grid>
 </Window>

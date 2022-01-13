@@ -16,8 +16,6 @@
         <TextBox HorizontalAlignment="Left" Margin="60,220,0,0" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Margin="60,280,0,0" Text="{Binding Path=Address, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="60,437,0,0" VerticalAlignment="Top" Command="{Binding Path=CreateUser}"/>
-        <TextBox HorizontalAlignment="Left" Margin="125,55,0,0" Text="{Binding Path=NumberOfRunners, Mode=OneWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
-        <Label Content="RunnerID:" HorizontalAlignment="Left" Margin="60,50,0,0" VerticalAlignment="Top"/>
 
 
     </Grid>
