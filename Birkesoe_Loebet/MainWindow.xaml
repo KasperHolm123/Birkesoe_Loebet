@@ -18,6 +18,8 @@
             <MenuItem Header="Funktioner">
                 <MenuItem Header="Opret løber" Command="{Binding Path=CreateUser}"/>
                 <MenuItem Header="Registrer rute" Command="{Binding Path=RegisterUser}"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="MenuItem_Click"/>
             </MenuItem>
         </Menu>
         

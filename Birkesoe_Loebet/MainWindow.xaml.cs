@@ -29,5 +29,10 @@ namespace Birkesoe_Loebet
             InitializeComponent();
             DataContext = model;
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
