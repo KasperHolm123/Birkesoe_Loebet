@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
 using Birkesoe_Loebet.ViewModels;
 
 namespace Birkesoe_Loebet.Views
@@ -20,9 +21,11 @@ namespace Birkesoe_Loebet.Views
     /// </summary>
     public partial class AddRunnerWindow : Window
     {
+        
         CreateViewModel CreateVM;
-        public AddRunnerWindow()
+        public AddRunnerWindow(CancelEventHandler closingEventHandler)
         {
+            Closing += closingEventHandler; 
             CreateVM = new CreateViewModel();
             InitializeComponent();
             DataContext = CreateVM;

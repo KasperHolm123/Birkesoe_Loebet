@@ -33,6 +33,7 @@ namespace Birkesoe_Loebet.ViewModels
     {
         public event WarningMessage WarningHandler;
         private int RouteID = 1;
+        private int numberOfRunners;
         public ObservableCollection<Runner> Runners { get; set; }
         public RelayCommand CreateUser { get; set; }
         public RelayCommand RegisterUser { get; set; }
@@ -50,7 +51,7 @@ namespace Birkesoe_Loebet.ViewModels
 
         private void OpenCreateWindow()
         {
-            AddRunnerWindow window = new AddRunnerWindow();
+            AddRunnerWindow window = new AddRunnerWindow(new CancelEventHandler(GetRunner));
             window.ShowDialog();
         }
 
@@ -120,6 +121,58 @@ namespace Birkesoe_Loebet.ViewModels
         private void SetRoute(int id)
         {
             RouteID = id;
+        }
+        private void GetRunner(object sender, CancelEventArgs e)
+        {
+            GetNumberOfRunners();
+            try
+            {
+                connection.Open();
+                string query = "SELECT RunnerID, [Name], Phone, Email, [Address]" + "FROM Runners\n" + "WHERE RunnerID = @RunnerID";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.Add(CreateParameter("@RunnerID", numberOfRunners, SqlDbType.Int)); 
+                using(SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Runners.Add(new Runner(new PropertyChangedEventHandler(Runner_PropertyChanged), (string)reader["Name"], (int)reader["RunnerID"]));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                OnWarning(ex.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                {
+                    connection.Close();
+                }
+                GetNumberOfRunners();
+            }
+        }
+        private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
+        {
+            try
+            {
+                connection.Open();
+                string query = "SELECT COUNT(*) FROM Runners";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    numberOfRunners = (int)command.ExecuteScalar() + 99;
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+
         }
     }
 

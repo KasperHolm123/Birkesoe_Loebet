@@ -34,6 +34,12 @@ namespace Birkesoe_Loebet.Models
             Course = course;
             endTime = new TimeSpan(10, 14, 56);
         }
+        public Runner(PropertyChangedEventHandler eventHandler, string name, int id)
+        {
+            PropertyChanged += eventHandler;
+            Name = name;
+            RunnerID = id;
+        }
         public Runner()
         {
             
