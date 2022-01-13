@@ -20,6 +20,11 @@ namespace Birkesoe_Loebet.ViewModels
         private bool route1Enabled;
         private bool route2Enabled;
         private bool route3Enabled;
+
+        // GetRunners() som indsætter alle RunnerID'er fra databasen ind i en list eller array.
+        // Denne liste bruges så til at tjekke om hvad der er skrevet ind i textbox i viewet er en gyldig værdi.
+        private List<RunningCourse> registeredRunnerID;
+      
         private List<RunningCourse> courses; //Brugeren skal på en eller anden måde kunne se hvilke ruter som er valgt før det registreres
 
         // Modeler som skal bruges i SQL queries
@@ -33,14 +38,13 @@ namespace Birkesoe_Loebet.ViewModels
 
         public RegisterViewModel()
         {
-            courses = new List<RunningCourse>();
-            RegisterRunner = new RelayCommand(p => RegisterCmd());
+            registeredRunnerID = new List<RunningCourse>();
+            RegisterRunner = new RelayCommand(p => RegisterCmd(), p => CanExecute());
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
         }
 
         private void RegisterCmd()
         {
-            Trace.WriteLine("yeet");
             BuildModel();
             //INSERT INTO query 
             try
@@ -146,6 +150,15 @@ namespace Birkesoe_Loebet.ViewModels
         public void OnWarning(string message)
         {
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
+        }
+
+        public bool CanExecute()
+        {
+            if (Course < 1 || Course > 3)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

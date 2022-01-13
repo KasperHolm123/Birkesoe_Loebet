@@ -31,7 +31,7 @@ namespace Birkesoe_Loebet.ViewModels
 
         public CreateViewModel()
         {
-            CreateUser = new RelayCommand(p => CreateCmd());
+            CreateUser = new RelayCommand(p => CreateCmd(), p => CanExecute());
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
         }
 
@@ -133,6 +133,15 @@ namespace Birkesoe_Loebet.ViewModels
         public void OnWarning(string message)
         {
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
+        }
+
+        public bool CanExecute()
+        {
+            if (Name == null || PhoneNumber == null || Address == null || Email == null)
+            { 
+                return false; 
+            }
+            return true;
         }
     }
 }
