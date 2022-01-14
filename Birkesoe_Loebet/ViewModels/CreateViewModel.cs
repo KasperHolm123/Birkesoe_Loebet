@@ -15,18 +15,20 @@ namespace Birkesoe_Loebet.ViewModels
     public class CreateViewModel : INotifyPropertyChanged
     {
         public event WarningMessage WarningHandler;
+        public event PropertyChangedEventHandler PropertyChanged;
+        
         //Properties bindet til tekst-felter i UI, her kan vi også evt enforce attributes' domæner. Den vil kun registrere brugeren med et gyldigt tlf-nr f.eks
         public string Name { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private int numberOfRunners;
 
         Runner model = new Runner();
         
         public RelayCommand CreateUser { get; set; }
+
         private SqlConnection connection;
 
         public CreateViewModel()

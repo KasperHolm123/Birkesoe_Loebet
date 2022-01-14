@@ -50,9 +50,10 @@
         <ScrollViewer Height="434" VerticalAlignment="Bottom">
             <StackPanel>
                 <Label Content="Ruter" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0"/>
-                <Button Content="Rute 1: 2km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="2.0M"/>
-                <Button Content="Rute 2: 5km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="5.0M"/>
-                <Button Content="Rute 3: 9km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="9.0M"/>
+                <Button Content="Rute 1: 2.3km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="2,3"/>
+                <Button Content="Rute 2: 5.2km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="5,2"/>
+                <Button Content="Rute 3: 9.4km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="9,4"/>
+                <Button Content="Button" Command="{Binding Path=SearchCmd}"/>
             </StackPanel>
         </ScrollViewer>
         

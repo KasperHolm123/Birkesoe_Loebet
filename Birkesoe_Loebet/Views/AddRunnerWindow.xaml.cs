@@ -22,13 +22,17 @@ namespace Birkesoe_Loebet.Views
     public partial class AddRunnerWindow : Window
     {
         
-        CreateViewModel CreateVM;
+        CreateViewModel model;
         public AddRunnerWindow(CancelEventHandler closingEventHandler)
         {
-            Closing += closingEventHandler; 
-            CreateVM = new CreateViewModel();
+            //Closing += closingEventHandler;
+            model = new CreateViewModel();
             InitializeComponent();
-            DataContext = CreateVM;
+            model.WarningHandler += delegate (object sender, MessageEventArgs e)
+            {
+                MessageBox.Show(e.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            };
+            DataContext = model;
         }
     }
 }

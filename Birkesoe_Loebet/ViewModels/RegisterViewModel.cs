@@ -16,10 +16,11 @@ namespace Birkesoe_Loebet.ViewModels
     {
         public event WarningMessage WarningHandler; // Event der håndterer advarsler
         public int RunnerID { get; set; }
+        public int routeAmount = 0;
+
         private bool route1Enabled;
         private bool route2Enabled;
         private bool route3Enabled;
-        public int routeAmount = 0;
 
         private RunningCourse[] courses = new RunningCourse[3]; //Brugeren skal på en eller anden måde kunne se hvilke ruter som er valgt før det registreres
 
@@ -77,6 +78,7 @@ namespace Birkesoe_Loebet.ViewModels
         {
             model.RunnerID = RunnerID;
         }
+
         public bool Route1Enabled
         {
             get
@@ -145,6 +147,7 @@ namespace Birkesoe_Loebet.ViewModels
             };
             return param;
         }
+
         public void OnWarning(string message)
         {
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));

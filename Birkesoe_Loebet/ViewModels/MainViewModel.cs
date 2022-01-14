@@ -32,21 +32,28 @@ namespace Birkesoe_Loebet.ViewModels
     public class MainViewModel
     {
         public event WarningMessage WarningHandler;
-        private decimal routeDistance = 1.0M;
+
+        private decimal routeDistance;
+
         private int numberOfRunners;
+
         public ObservableCollection<Runner> Runners { get; set; }
+
         public RelayCommand CreateUser { get; set; }
         public RelayCommand RegisterUser { get; set; }
         public RelayCommand SetCmd { get; set; }
+        public RelayCommand SearchCmd { get; set; }
+
         public SqlConnection connection;
+
         public MainViewModel()
         {
             Runners = new ObservableCollection<Runner>();
-            Runners.Add(new Runner(new PropertyChangedEventHandler(Runner_PropertyChanged), "Roy", "Dåsbjergvej 46", "20235775", "jklausen9@gmail.com", new RunningCourse()));
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
-            SetCmd = new RelayCommand(p => SetRoute((decimal)p));
+            SetCmd = new RelayCommand(p => SetRoute(Convert.ToDecimal(p)));
+            SearchCmd = new RelayCommand(p => Search());
         }
 
         private void OpenCreateWindow()
@@ -60,6 +67,41 @@ namespace Birkesoe_Loebet.ViewModels
         {
             RegisterRunnerWindow window = new RegisterRunnerWindow();
             window.ShowDialog();
+        }
+
+        private void Search()
+        {
+            Runners.Clear();
+            Runner runner = new Runner();
+            try
+            {
+                connection.Open();
+                string query = "SELECT Runners.RunnerID, [Name], Distance, StartTime, EndTime " +
+                               "FROM Runners INNER JOIN Registered " +
+                               "ON Runners.RunnerID = Registered.RunnerID " +
+                               "WHERE Distance = @routeDistance";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.Add(CreateParameter("@routeDistance", routeDistance, SqlDbType.Decimal));
+                using(SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Runners.Add(new Runner(new PropertyChangedEventHandler(Runner_PropertyChanged),
+                                   (string)reader["Name"], new RunningCourse((TimeSpan)reader["StartTime"], (decimal)reader["Distance"]), (int)reader["RunnerID"]));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                OnWarning(ex.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                {
+                    connection.Close();
+                }
+            }
         }
 
         private void Runner_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -91,6 +133,7 @@ namespace Birkesoe_Loebet.ViewModels
                 }
             }
         }
+
         private SqlParameter CreateParameter(string paramName, object value, SqlDbType type)
         {
             SqlParameter param = new SqlParameter
@@ -101,14 +144,17 @@ namespace Birkesoe_Loebet.ViewModels
             };
             return param;
         }
+
         public void OnWarning(string message)
         {
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
         }
+
         private void SetRoute(decimal dist)
         {
             routeDistance = dist;
         }
+
         private void GetRunner(object sender, CancelEventArgs e)
         {
             Runners = new ObservableCollection<Runner>();
@@ -140,6 +186,7 @@ namespace Birkesoe_Loebet.ViewModels
                 GetNumberOfRunners();
             }
         }
+
         private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
         {
             try

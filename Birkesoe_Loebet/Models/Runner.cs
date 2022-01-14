@@ -13,17 +13,26 @@ namespace Birkesoe_Loebet.Models
     /// </summary>
     public class Runner : INotifyPropertyChanged
     {
-        
         public event PropertyChangedEventHandler PropertyChanged;
+
         public string Name { get; set; }
         public string RunnerAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         private string result;
-        public List<RunningCourse> RunningCourses = new List<RunningCourse>(); // Hver enkelte løber kan tilmelde sig én eller flere distancer
-        private TimeSpan endTime;
         public int RunnerID { get; set; }
+        
+        public List<RunningCourse> RunningCourses = new List<RunningCourse>(); // Hver enkelte løber kan tilmelde sig én eller flere distancer
+        
+        private TimeSpan endTime;
+        
         public RunningCourse Course { get; set; }
+
+        public Runner()
+        {
+
+        }
+
         public Runner(PropertyChangedEventHandler eventHandler, string name, string address, string phone, string email, RunningCourse course) //Build Runner model
         {
             PropertyChanged += eventHandler;
@@ -32,7 +41,13 @@ namespace Birkesoe_Loebet.Models
             PhoneNumber = phone;
             Email = email;
             Course = course;
-            endTime = new TimeSpan(10, 14, 56);
+        }
+        public Runner(PropertyChangedEventHandler eventHandler, string name, RunningCourse course, int runnerID) //Build Runner model
+        {
+            PropertyChanged += eventHandler;
+            Name = name;
+            Course = course;
+            RunnerID = runnerID;
         }
         public Runner(PropertyChangedEventHandler eventHandler, string name, int id)
         {
@@ -40,10 +55,7 @@ namespace Birkesoe_Loebet.Models
             Name = name;
             RunnerID = id;
         }
-        public Runner()
-        {
-            
-        }
+        
         public string EndTime
         {
             get { return endTime.ToString(); }
@@ -53,6 +65,7 @@ namespace Birkesoe_Loebet.Models
                 OnPropertyChanged("EndTime");
             }
         }
+
         public string Result
         {
             get
@@ -61,6 +74,7 @@ namespace Birkesoe_Loebet.Models
                 return dateDifference.ToString();
             }
         }
+
         private void OnPropertyChanged(string property)
         {
             if(PropertyChanged != null)

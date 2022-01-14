@@ -10,13 +10,26 @@ namespace Birkesoe_Loebet.Models
     {
         public int ID { get; set; }
         public decimal CourseDistance { get; set; }
+
         private TimeSpan startTime;
-        public RunningCourse( int ID = 1 )
+
+        public RunningCourse()
+        {
+
+        }
+
+        public RunningCourse(int ID = 1)
         {
             this.ID = ID;
-            this.StartTime = "02:14:18";
-            CourseDistance = 4.2M;
         }
+
+        public RunningCourse(TimeSpan starttime, decimal distance = 2.3M, int ID = 1)
+        {
+            this.ID = ID;
+            startTime = starttime;
+            CourseDistance = distance;
+        }
+        
         public string StartTime
         {
             get { return startTime.ToString(); }

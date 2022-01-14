@@ -27,6 +27,10 @@ namespace Birkesoe_Loebet
         {
             model = new MainViewModel();
             InitializeComponent();
+            model.WarningHandler += delegate (object sender, MessageEventArgs e)
+            {
+                MessageBox.Show(e.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            };
             DataContext = model;
         }
 
