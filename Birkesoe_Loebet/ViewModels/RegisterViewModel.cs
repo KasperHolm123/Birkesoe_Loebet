@@ -51,7 +51,7 @@ namespace Birkesoe_Loebet.ViewModels
                     if (course != null)
                     {
                         string query = "INSERT INTO Registered (RunnerID, Distance, StartTime)\n" +
-                                "VALUES ((SELECT RunnerID FROM Runners WHERE RunnerID = @RunnerID), " +
+                                "VALUES (@RunnerID, " +
                                 "(SELECT Distance FROM [Route] WHERE ID = @course), " +
                                 "(SELECT StartTime FROM [Route] WHERE ID = @course))";
                         SqlCommand command = new SqlCommand(query, connection);

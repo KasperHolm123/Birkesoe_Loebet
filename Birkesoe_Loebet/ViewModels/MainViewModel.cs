@@ -40,7 +40,8 @@ namespace Birkesoe_Loebet.ViewModels
 
         private bool IsResultList;
 
-        private System.Windows.Visibility gridVisibility;
+        private System.Windows.Visibility startgridVisibility;
+        private System.Windows.Visibility resultgridVisibility;
 
         public ObservableCollection<Runner> Runners { get; set; }
 
@@ -57,6 +58,7 @@ namespace Birkesoe_Loebet.ViewModels
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
             SetCmd = new RelayCommand(p => SetRoute(Convert.ToDecimal(p)));
+            IsResultList = false;
         }
 
         private void OpenCreateWindow()
@@ -78,7 +80,7 @@ namespace Birkesoe_Loebet.ViewModels
             try
             {
                 connection.Open();
-                string query = "SELECT Runners.RunnerID, [Name], Phone, Email, [Address] " +
+                string query = "SELECT Runners.RunnerID, [Name], Phone, Email, [Address], StartTime, EndTime " +
                                "FROM Runners INNER JOIN Registered " +
                                "ON Runners.RunnerID = Registered.RunnerID " +
                                "WHERE Distance = @routeDistance";
@@ -122,7 +124,7 @@ namespace Birkesoe_Loebet.ViewModels
                     while (reader.Read())
                     {
                         Runners.Add(new Runner(new PropertyChangedEventHandler(Runner_PropertyChanged),
-                                   (string)reader["Name"], new RunningCourse((TimeSpan)reader["StartTime"], (decimal)reader["Distance"]), (int)reader["RunnerID"]));
+                                   (string)reader["Name"], new RunningCourse((TimeSpan)reader["StartTime"], (decimal)reader["Distance"]), (int)reader["RunnerID"],getTime(reader["EndTime"])));
                     }
                 }
             }
@@ -194,10 +196,20 @@ namespace Birkesoe_Loebet.ViewModels
 
         private void SetRoute(decimal dist)
         {
-            routeDistance = dist;
+            RouteDistance = dist;
             //Search(); // Skal ændres når vi har lavet metode til at vise enten start- eller resultat lister
         }
-
+        private static TimeSpan getTime(object obj) //Scuffed løsning, men det skal håndteres at database returnerer null på EndTime
+        {
+            if(obj == DBNull.Value)
+            {
+                return new TimeSpan(0, 0, 0); //TimeSpan er normalt ikke nullable, så dette svarer til null i vores tilfælde
+            }
+            else
+            {
+                return (TimeSpan)obj;
+            }
+        }
         public bool IsResultListShown
         {
             get
@@ -209,28 +221,56 @@ namespace Birkesoe_Loebet.ViewModels
                 IsResultList = value;
                 if (IsResultList)
                 {
-                    GridVisibility = System.Windows.Visibility.Visible;
                     ResultListSearch();
+                    ResultGridVisibility = System.Windows.Visibility.Visible;
+                    StartGridVisibility = System.Windows.Visibility.Collapsed;
                 }
-                GridVisibility = System.Windows.Visibility.Collapsed;
-                StartListSearch();
+                else
+                {
+                    StartListSearch();
+                    StartGridVisibility = System.Windows.Visibility.Visible;
+                    ResultGridVisibility = System.Windows.Visibility.Collapsed;
+                }
             }
         }
 
-        public System.Windows.Visibility GridVisibility
+        public System.Windows.Visibility ResultGridVisibility
         {
             get 
             {
-                return gridVisibility;
+                return resultgridVisibility;
             }
             set
             {
+                resultgridVisibility = value;
+                OnPropertyChanged("ResultGridVisibility");
+            }
+        }
+        public System.Windows.Visibility StartGridVisibility
+        {
+            get
+            {
+                return startgridVisibility;
+            }
+            set
+            {
+                startgridVisibility = value;
+                OnPropertyChanged("StartGridVisibility");
+            }
+        }
+        public decimal RouteDistance
+        {
+            set
+            {
+                routeDistance = value;
                 if (IsResultList)
                 {
-                    gridVisibility = System.Windows.Visibility.Collapsed;
+                    ResultListSearch();
                 }
-                gridVisibility = System.Windows.Visibility.Visible;
-                OnPropertyChanged("GridVisibility");
+                else
+                {
+                    StartListSearch();
+                }
             }
         }
 

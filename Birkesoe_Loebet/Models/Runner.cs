@@ -45,8 +45,9 @@ namespace Birkesoe_Loebet.Models
         }
 
         // Contructor til søg i resultat liste
-        public Runner(PropertyChangedEventHandler eventHandler, string name, RunningCourse course, int runnerID)
+        public Runner(PropertyChangedEventHandler eventHandler, string name, RunningCourse course, int runnerID, TimeSpan endtime)
         {
+            endTime = endtime;
             PropertyChanged += eventHandler;
             Name = name;
             Course = course;
@@ -63,7 +64,15 @@ namespace Birkesoe_Loebet.Models
         
         public string EndTime
         {
-            get { return endTime.ToString(); }
+            get
+            {
+                if (0 == TimeSpan.Compare(endTime, new TimeSpan(0, 0, 0)))
+                {
+                    return null;
+                }
+                return endTime.ToString();
+            }
+
             set
             {
                 endTime = TimeSpan.Parse(value);
@@ -75,6 +84,10 @@ namespace Birkesoe_Loebet.Models
         {
             get
             {
+                if(0 == TimeSpan.Compare(endTime, new TimeSpan(0,0,0)) || Course == null)
+                {
+                    return null;
+                }
                 TimeSpan dateDifference = endTime.Subtract(TimeSpan.Parse(Course.StartTime));
                 return dateDifference.ToString();
             }
