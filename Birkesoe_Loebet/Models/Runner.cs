@@ -19,8 +19,9 @@ namespace Birkesoe_Loebet.Models
         public string RunnerAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        private string result;
+
         public int RunnerID { get; set; }
+        private string result;
         
         public List<RunningCourse> RunningCourses = new List<RunningCourse>(); // Hver enkelte løber kan tilmelde sig én eller flere distancer
         
@@ -33,22 +34,26 @@ namespace Birkesoe_Loebet.Models
 
         }
 
-        public Runner(PropertyChangedEventHandler eventHandler, string name, string address, string phone, string email, RunningCourse course) //Build Runner model
+        // Constructor til søg i start liste
+        public Runner(int runnerID, string name, string phone, string email, string address)
         {
-            PropertyChanged += eventHandler;
+            RunnerID = runnerID;
             Name = name;
             RunnerAddress = address;
             PhoneNumber = phone;
             Email = email;
-            Course = course;
         }
-        public Runner(PropertyChangedEventHandler eventHandler, string name, RunningCourse course, int runnerID) //Build Runner model
+
+        // Contructor til søg i resultat liste
+        public Runner(PropertyChangedEventHandler eventHandler, string name, RunningCourse course, int runnerID)
         {
             PropertyChanged += eventHandler;
             Name = name;
             Course = course;
             RunnerID = runnerID;
         }
+
+
         public Runner(PropertyChangedEventHandler eventHandler, string name, int id)
         {
             PropertyChanged += eventHandler;

@@ -29,20 +29,24 @@ namespace Birkesoe_Loebet.ViewModels
         }
     }
 
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public event WarningMessage WarningHandler;
 
         private decimal routeDistance;
 
         private int numberOfRunners;
 
+        private bool IsResultList;
+
+        private System.Windows.Visibility gridVisibility;
+
         public ObservableCollection<Runner> Runners { get; set; }
 
         public RelayCommand CreateUser { get; set; }
         public RelayCommand RegisterUser { get; set; }
         public RelayCommand SetCmd { get; set; }
-        public RelayCommand SearchCmd { get; set; }
 
         public SqlConnection connection;
 
@@ -53,7 +57,6 @@ namespace Birkesoe_Loebet.ViewModels
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
             SetCmd = new RelayCommand(p => SetRoute(Convert.ToDecimal(p)));
-            SearchCmd = new RelayCommand(p => Search());
         }
 
         private void OpenCreateWindow()
@@ -69,10 +72,42 @@ namespace Birkesoe_Loebet.ViewModels
             window.ShowDialog();
         }
 
-        private void Search()
+        private void StartListSearch()
         {
-            Runners.Clear();
-            Runner runner = new Runner();
+            NewSearch();
+            try
+            {
+                connection.Open();
+                string query = "SELECT Runners.RunnerID, [Name], Phone, Email, [Address] " +
+                               "FROM Runners INNER JOIN Registered " +
+                               "ON Runners.RunnerID = Registered.RunnerID " +
+                               "WHERE Distance = @routeDistance";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.Add(CreateParameter("@routeDistance", routeDistance, SqlDbType.Decimal));
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Runners.Add(new Runner((int)reader["RunnerID"], (string)reader["Name"], (string)reader["Phone"], (string)reader["Email"], (string)reader["Address"]));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                OnWarning(ex.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        private void ResultListSearch()
+        {
+            NewSearch();
             try
             {
                 connection.Open();
@@ -102,6 +137,13 @@ namespace Birkesoe_Loebet.ViewModels
                     connection.Close();
                 }
             }
+        }
+
+        // Clear og instantier ny løber model.
+        private void NewSearch()
+        {
+            Runners.Clear();
+            Runner runner = new Runner();
         }
 
         private void Runner_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -153,6 +195,43 @@ namespace Birkesoe_Loebet.ViewModels
         private void SetRoute(decimal dist)
         {
             routeDistance = dist;
+            //Search(); // Skal ændres når vi har lavet metode til at vise enten start- eller resultat lister
+        }
+
+        public bool IsResultListShown
+        {
+            get
+            {
+                return IsResultList;
+            }
+            set
+            {
+                IsResultList = value;
+                if (IsResultList)
+                {
+                    GridVisibility = System.Windows.Visibility.Visible;
+                    ResultListSearch();
+                }
+                GridVisibility = System.Windows.Visibility.Collapsed;
+                StartListSearch();
+            }
+        }
+
+        public System.Windows.Visibility GridVisibility
+        {
+            get 
+            {
+                return gridVisibility;
+            }
+            set
+            {
+                if (IsResultList)
+                {
+                    gridVisibility = System.Windows.Visibility.Collapsed;
+                }
+                gridVisibility = System.Windows.Visibility.Visible;
+                OnPropertyChanged("GridVisibility");
+            }
         }
 
         private void GetRunner(object sender, CancelEventArgs e)
@@ -208,6 +287,14 @@ namespace Birkesoe_Loebet.ViewModels
                 connection.Close();
             }
 
+        }
+
+        private void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
+            }
         }
     }
 

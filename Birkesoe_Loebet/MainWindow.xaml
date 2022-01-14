@@ -25,7 +25,21 @@
         
         <!-- Interactive UI -->
         <Label Grid.Column="1" Content="temp" Background="LightGray" Margin="0,0,0,0"/>
-        <DataGrid Grid.Column="1" Margin="20,40,20,20" ItemsSource="{Binding Runners}" AutoGenerateColumns="False">
+        <CheckBox Grid.Column="1" Content="Vis resultater" Margin="500,10,0,0" IsChecked="{Binding Path=IsResultListShown}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+        <!-- Start list -->
+        <DataGrid Grid.Column="1" Margin="20,40,20,20" ItemsSource="{Binding Runners}" AutoGenerateColumns="False" Visibility="{Binding Path=GridVisibility}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="RunnerID" Binding="{Binding RunnerID}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Phone" Binding="{Binding PhoneNumber}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Adresse" Binding="{Binding RunnerAddress}" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!-- Result list -->
+        <DataGrid Grid.Column="1" Margin="20,40,20,20" ItemsSource="{Binding Runners}" AutoGenerateColumns="False" Visibility="Collapsed">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="RunnerID" Binding="{Binding RunnerID}" IsReadOnly="True"/>
@@ -53,7 +67,6 @@
                 <Button Content="Rute 1: 2.3km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="2,3"/>
                 <Button Content="Rute 2: 5.2km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="5,2"/>
                 <Button Content="Rute 3: 9.4km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="9,4"/>
-                <Button Content="Button" Command="{Binding Path=SearchCmd}"/>
             </StackPanel>
         </ScrollViewer>
         
