@@ -28,7 +28,7 @@
         <CheckBox Grid.Column="1" Content="Vis resultater" Margin="500,10,0,0" IsChecked="{Binding Path=IsResultListShown}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
         <!-- Start list -->
-        <DataGrid Grid.Column="1" Margin="20,40,20,20" ItemsSource="{Binding Runners}" AutoGenerateColumns="False" Visibility="{Binding Path=StartGridVisibility}">
+        <DataGrid Grid.Column="1" Margin="20,40,20,20" ItemsSource="{Binding Runners}" AutoGenerateColumns="False" Visibility="{Binding Path=StartGridVisibility}" Panel.ZIndex="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="RunnerID" Binding="{Binding RunnerID}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>

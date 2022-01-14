@@ -197,7 +197,6 @@ namespace Birkesoe_Loebet.ViewModels
         private void SetRoute(decimal dist)
         {
             RouteDistance = dist;
-            //Search(); // Skal ændres når vi har lavet metode til at vise enten start- eller resultat lister
         }
         private static TimeSpan getTime(object obj) //Scuffed løsning, men det skal håndteres at database returnerer null på EndTime
         {
