@@ -74,7 +74,7 @@ namespace Birkesoe_Loebet.ViewModels
                 connection.Open();
                 string query = "UPDATE Registered\n" + "SET EndTime = @EndTime\n" + "WHERE RunnerID = @RunnerID AND Distance = @Distance";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.Add(CreateParameter("@EndTime", runner.EndTime, SqlDbType.Time));
+                command.Parameters.Add(CreateParameter("@EndTime", TimeSpan.Parse(runner.EndTime), SqlDbType.Time));
                 command.Parameters.Add(CreateParameter("@Distance", runner.Course.CourseDistance, SqlDbType.Decimal));
                 command.Parameters.Add(CreateParameter("@RunnerID", runner.RunnerID, SqlDbType.Int));
                 command.ExecuteNonQuery();
