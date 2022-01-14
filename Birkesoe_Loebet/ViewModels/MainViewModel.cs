@@ -32,7 +32,7 @@ namespace Birkesoe_Loebet.ViewModels
     public class MainViewModel
     {
         public event WarningMessage WarningHandler;
-        private int RouteID = 1;
+        private decimal routeDistance = 1.0M;
         private int numberOfRunners;
         public ObservableCollection<Runner> Runners { get; set; }
         public RelayCommand CreateUser { get; set; }
@@ -46,7 +46,7 @@ namespace Birkesoe_Loebet.ViewModels
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
-            SetCmd = new RelayCommand(p => SetRoute((int)p));
+            SetCmd = new RelayCommand(p => SetRoute((decimal)p));
         }
 
         private void OpenCreateWindow()
@@ -55,19 +55,6 @@ namespace Birkesoe_Loebet.ViewModels
             window.ShowDialog();
         }
 
-        private void GetRunners()
-        {
-            try
-            {
-                connection.Open();
-                string query = "";
-                SqlCommand command = new SqlCommand(query, connection);
-            }
-            catch
-            {
-
-            }
-        }
 
         private void OpenRegisterWindow()
         {
@@ -85,10 +72,10 @@ namespace Birkesoe_Loebet.ViewModels
             try
             {
                 connection.Open();
-                string query = "UPDATE Registered\n" + "SET EndTime = @EndTime\n" + "WHERE RunnerID = @RunnerID AND ID = @ID";
+                string query = "UPDATE Registered\n" + "SET EndTime = @EndTime\n" + "WHERE RunnerID = @RunnerID AND Distance = @Distance";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.Add(CreateParameter("@EndTime", runner.EndTime, SqlDbType.Time));
-                command.Parameters.Add(CreateParameter("@Distance", runner.Course.ID, SqlDbType.Int));
+                command.Parameters.Add(CreateParameter("@Distance", runner.Course.CourseDistance, SqlDbType.Decimal));
                 command.Parameters.Add(CreateParameter("@RunnerID", runner.RunnerID, SqlDbType.Int));
                 command.ExecuteNonQuery();
             }
@@ -118,12 +105,13 @@ namespace Birkesoe_Loebet.ViewModels
         {
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
         }
-        private void SetRoute(int id)
+        private void SetRoute(decimal dist)
         {
-            RouteID = id;
+            routeDistance = dist;
         }
         private void GetRunner(object sender, CancelEventArgs e)
         {
+            Runners = new ObservableCollection<Runner>();
             GetNumberOfRunners();
             try
             {
