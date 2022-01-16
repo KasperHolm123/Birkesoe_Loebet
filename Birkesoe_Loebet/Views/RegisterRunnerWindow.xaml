@@ -12,6 +12,6 @@
         <CheckBox Content="Rute 1" HorizontalAlignment="Left" Margin="238,58,0,0" VerticalAlignment="Top" IsChecked="{Binding Path=Route1Enabled}"/>
         <CheckBox Content="Rute 2" HorizontalAlignment="Left" Margin="238,98,0,0" VerticalAlignment="Top" IsChecked="{Binding Path=Route2Enabled}"/>
         <CheckBox Content="Rute 3" HorizontalAlignment="Left" Margin="238,138,0,0" VerticalAlignment="Top" IsChecked="{Binding Path=Route3Enabled}"/>
-        <Button Content="Register" HorizontalAlignment="Center" Margin="0,202,0,0" VerticalAlignment="Top" Command="{Binding Path=RegisterRunner}"/>
+        <Button Content="Registrer" HorizontalAlignment="Center" Margin="0,202,0,0" VerticalAlignment="Top" Command="{Binding Path=RegisterRunner}"/>
     </Grid>
 </Window>
