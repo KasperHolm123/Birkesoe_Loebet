@@ -55,7 +55,7 @@ namespace Birkesoe_Loebet.ViewModels
                                 "(SELECT Distance FROM [Route] WHERE ID = @course), " +
                                 "(SELECT StartTime FROM [Route] WHERE ID = @course))";
                         SqlCommand command = new SqlCommand(query, connection);
-                        //command.Parameters.Add(CreateParameter("@RunnerID", model.RunnerID, SqlDbType.Int));
+                        command.Parameters.Add(CreateParameter("@RunnerID", model.RunnerID, SqlDbType.Int));
                         command.Parameters.Add(CreateParameter("@course", course.ID, SqlDbType.Int));
                         command.ExecuteNonQuery();
                     }
@@ -73,6 +73,7 @@ namespace Birkesoe_Loebet.ViewModels
                 }
             }
         }
+
         private void BuildModel()
         {
             model.RunnerID = RunnerID;
