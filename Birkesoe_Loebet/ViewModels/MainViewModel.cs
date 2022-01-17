@@ -36,7 +36,7 @@ namespace Birkesoe_Loebet.ViewModels
 
         private decimal routeDistance;
 
-        private int numberOfRunners;
+        public int NumberOfRunners { get; set; }
 
         private bool IsResultList;
 
@@ -48,7 +48,7 @@ namespace Birkesoe_Loebet.ViewModels
         public RelayCommand CreateUser { get; set; }
         public RelayCommand RegisterUser { get; set; }
         public RelayCommand SetCmd { get; set; }
-
+        public RelayCommand FindRunner { get; set; }
         public SqlConnection connection;
 
         public MainViewModel()
@@ -58,12 +58,13 @@ namespace Birkesoe_Loebet.ViewModels
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
             SetCmd = new RelayCommand(p => SetRoute(Convert.ToDecimal(p)));
+            FindRunner = new RelayCommand(p => GetRunner(), p => CanSearch());
             IsResultList = false;
         }
 
         private void OpenCreateWindow()
         {
-            AddRunnerWindow window = new AddRunnerWindow(new CancelEventHandler(GetRunner));
+            AddRunnerWindow window = new AddRunnerWindow();
             window.ShowDialog();
         }
 
@@ -273,21 +274,24 @@ namespace Birkesoe_Loebet.ViewModels
             }
         }
 
-        private void GetRunner(object sender, CancelEventArgs e)
+        private void GetRunner()
         {
-            Runners = new ObservableCollection<Runner>();
-            GetNumberOfRunners();
+            NewSearch();
             try
             {
                 connection.Open();
-                string query = "SELECT RunnerID, [Name], Phone, Email, [Address]" + "FROM Runners\n" + "WHERE RunnerID = @RunnerID";
+                string query = "SELECT Runners.RunnerID, [Name], Distance, StartTime, EndTime " +
+               "FROM Runners INNER JOIN Registered " +
+               "ON Runners.RunnerID = Registered.RunnerID " +
+               "WHERE Runners.RunnerID = @RunnerID";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.Add(CreateParameter("@RunnerID", numberOfRunners, SqlDbType.Int)); 
+                command.Parameters.Add(CreateParameter("@RunnerID", NumberOfRunners, SqlDbType.Int)); 
                 using(SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        Runners.Add(new Runner(new PropertyChangedEventHandler(Runner_PropertyChanged), (string)reader["Name"], (int)reader["RunnerID"]));
+                        Runners.Add(new Runner(new PropertyChangedEventHandler(Runner_PropertyChanged),
+                         (string)reader["Name"], new RunningCourse((TimeSpan)reader["StartTime"], (decimal)reader["Distance"]), (int)reader["RunnerID"], getTime(reader["EndTime"])));
                     }
                 }
             }
@@ -301,31 +305,16 @@ namespace Birkesoe_Loebet.ViewModels
                 {
                     connection.Close();
                 }
-                GetNumberOfRunners();
             }
         }
 
-        private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
+        public bool CanSearch()
         {
-            try
+            if (IsResultList && NumberOfRunners > 99)
             {
-                connection.Open();
-                string query = "SELECT COUNT(*) FROM Runners";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    numberOfRunners = (int)command.ExecuteScalar() + 99;
-                }
+                return true;
             }
-            catch
-            {
-
-            }
-            finally
-            {
-                connection.Close();
-            }
-
+            else return false;
         }
 
         private void OnPropertyChanged(string property)

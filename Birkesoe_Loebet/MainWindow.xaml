@@ -25,8 +25,10 @@
         
         <!-- Interactive UI -->
         <Label Grid.Column="1" Content="temp" Background="LightGray" Margin="0,0,0,0"/>
+        <Label Grid.Column="1" Content="ID:" Background="LightGray" Margin="-515,17,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <CheckBox Grid.Column="1" Content="Vis resultater" Margin="500,10,0,0" IsChecked="{Binding Path=IsResultListShown}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-
+        <Button Grid.Column="1" Content="Søg" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-560,20,0,0"  Command="{Binding Path=FindRunner}"/>
+        <TextBox Grid.Column="1" Text="{Binding Path=NumberOfRunners, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-450,20,0,0" Width="30" Height="20"/>
         <!-- Start list -->
         <DataGrid Grid.Column="1" Margin="20,40,20,20" ItemsSource="{Binding Runners}" AutoGenerateColumns="False" Visibility="{Binding Path=StartGridVisibility}" Panel.ZIndex="1">
             <DataGrid.Columns>
@@ -67,6 +69,7 @@
                 <Button Content="Rute 1: 2.3km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="2,3"/>
                 <Button Content="Rute 2: 5.2km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="5,2"/>
                 <Button Content="Rute 3: 9.4km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="9,4"/>
+
             </StackPanel>
         </ScrollViewer>
         

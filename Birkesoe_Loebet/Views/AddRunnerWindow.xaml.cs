@@ -23,9 +23,8 @@ namespace Birkesoe_Loebet.Views
     {
         
         CreateViewModel model;
-        public AddRunnerWindow(CancelEventHandler closingEventHandler)
+        public AddRunnerWindow()
         {
-            //Closing += closingEventHandler;
             model = new CreateViewModel();
             InitializeComponent();
             model.WarningHandler += delegate (object sender, MessageEventArgs e)
