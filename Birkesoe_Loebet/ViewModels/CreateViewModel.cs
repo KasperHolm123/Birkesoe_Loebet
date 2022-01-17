@@ -60,6 +60,9 @@ namespace Birkesoe_Loebet.ViewModels
             set { email = value; }
         }
 
+        /// <summary>
+        /// Hoved forfatter: Jonas Henckel
+        /// </summary>
         private void CreateCmd()
         {
             BuildModel();
@@ -97,6 +100,10 @@ namespace Birkesoe_Loebet.ViewModels
             model.Email = Email;
         }
 
+        /// <summary>
+        /// Hoved forfatter: Jonas Henckel
+        /// </summary>
+        /// <returns></returns>
         private bool ValidateInput() //Validerer at formattet af input stemmer
         {
             if (PhoneNumber.Length == 8 && Name.Length < 40)
@@ -106,6 +113,9 @@ namespace Birkesoe_Loebet.ViewModels
             else return false;
         }
 
+        /// <summary>
+        /// Hoved forfatter: Emil Thomsen
+        /// </summary>
         private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
         {
             try
@@ -148,6 +158,11 @@ namespace Birkesoe_Loebet.ViewModels
                 OnPropertyChanged("NumberOfRunners");
             }
         }
+
+        /// <summary>
+        /// Hoved forfatter: Emil Thomsen
+        /// </summary>
+        /// <param name="property"></param>
         private void OnPropertyChanged(string property)
         {
             if(this.PropertyChanged != null)
@@ -160,6 +175,10 @@ namespace Birkesoe_Loebet.ViewModels
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
         }
 
+        /// <summary>
+        /// Hoved forfatter: Kasper Holm
+        /// </summary>
+        /// <returns></returns>
         public bool CanExecute()
         {
             if (Name == "" || PhoneNumber == "" || Address == "" || Email == "")

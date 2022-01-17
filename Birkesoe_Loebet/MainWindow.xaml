@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Birkesoe_Loebet"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
     <Grid>
         <!-- Grid columns-->
         <Grid.ColumnDefinitions>
@@ -61,7 +61,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <ScrollViewer Height="434" VerticalAlignment="Bottom">
+        <ScrollViewer Height="482" VerticalAlignment="Top">
             <StackPanel>
                 <Label Content="Ruter" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0"/>
                 <Button Content="Rute 1: 2.3km" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Command="{Binding Path=SetCmd}" CommandParameter="2,3"/>

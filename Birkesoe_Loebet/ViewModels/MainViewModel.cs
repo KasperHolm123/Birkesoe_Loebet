@@ -19,6 +19,9 @@ namespace Birkesoe_Loebet.ViewModels
 {
     public delegate void WarningMessage(object sender, MessageEventArgs e);
 
+    /// <summary>
+    /// Hoved forfatter: Kasper Holm
+    /// </summary>
     public class MessageEventArgs
     {
         public string Message { get; private set; }
@@ -74,6 +77,9 @@ namespace Birkesoe_Loebet.ViewModels
             window.ShowDialog();
         }
 
+        /// <summary>
+        /// Hoved forfatter: Kasper Holm
+        /// </summary>
         private void StartListSearch()
         {
             NewSearch();
@@ -107,6 +113,9 @@ namespace Birkesoe_Loebet.ViewModels
             }
         }
 
+        /// <summary>
+        /// Hoved forfatter: Emil Thomsen
+        /// </summary>
         private void ResultListSearch()
         {
             NewSearch();
@@ -148,6 +157,11 @@ namespace Birkesoe_Loebet.ViewModels
             Runner runner = new Runner();
         }
 
+        /// <summary>
+        /// Hoved forfatter: Jonas Henckel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Runner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Runner runner = new Runner();
@@ -198,6 +212,11 @@ namespace Birkesoe_Loebet.ViewModels
         {
             RouteDistance = dist;
         }
+        /// <summary>
+        /// Hoved forfatter: Jonas Henckel
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private static TimeSpan getTime(object obj) //Scuffed løsning, men det skal håndteres at database returnerer null på EndTime
         {
             if(obj == DBNull.Value)
@@ -209,6 +228,9 @@ namespace Birkesoe_Loebet.ViewModels
                 return (TimeSpan)obj;
             }
         }
+        /// <summary>
+        /// Hoved forfatter: Emil Thomsen
+        /// </summary>
         public bool IsResultListShown
         {
             get
@@ -273,6 +295,11 @@ namespace Birkesoe_Loebet.ViewModels
             }
         }
 
+        /// <summary>
+        /// Hoved forfatter: Jonas Henckel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GetRunner(object sender, CancelEventArgs e)
         {
             Runners = new ObservableCollection<Runner>();
@@ -305,6 +332,9 @@ namespace Birkesoe_Loebet.ViewModels
             }
         }
 
+        /// <summary>
+        /// Hoved forfatter: Emil Thomsen
+        /// </summary>
         private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
         {
             try
@@ -328,6 +358,10 @@ namespace Birkesoe_Loebet.ViewModels
 
         }
 
+        /// <summary>
+        /// Jonas Henckel
+        /// </summary>
+        /// <param name="property"></param>
         private void OnPropertyChanged(string property)
         {
             if (PropertyChanged != null)
