@@ -39,6 +39,9 @@ namespace Birkesoe_Loebet.ViewModels
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
         }
 
+        /// <summary>
+        /// Hoved forfatter: Kasper Holm
+        /// </summary>
         private void RegisterCmd()
         {
             BuildModel();
@@ -153,6 +156,10 @@ namespace Birkesoe_Loebet.ViewModels
             if (WarningHandler != null) WarningHandler(this, new MessageEventArgs(message));
         }
 
+        /// <summary>
+        /// Hoved forfatter: 
+        /// </summary>
+        /// <returns></returns>
         public bool CanExecute()
         {
             if (route1Enabled == true || route2Enabled == true || route3Enabled == true)
