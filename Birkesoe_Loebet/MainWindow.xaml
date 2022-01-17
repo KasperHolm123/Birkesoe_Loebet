@@ -24,7 +24,6 @@
         </Menu>
         
         <!-- Interactive UI -->
-        <Label Grid.Column="1" Content="temp" Background="LightGray" Margin="0,0,0,0"/>
         <Label Grid.Column="1" Content="ID:" Background="LightGray" Margin="-515,17,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <CheckBox Grid.Column="1" Content="Vis resultater" Margin="500,10,0,0" IsChecked="{Binding Path=IsResultListShown}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Button Grid.Column="1" Content="Søg" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-560,20,0,0"  Command="{Binding Path=FindRunner}"/>
