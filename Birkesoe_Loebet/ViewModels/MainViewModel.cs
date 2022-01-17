@@ -51,7 +51,6 @@ namespace Birkesoe_Loebet.ViewModels
         public RelayCommand CreateUser { get; set; }
         public RelayCommand RegisterUser { get; set; }
         public RelayCommand SetCmd { get; set; }
-        public RelayCommand FindRunner { get; set; }
         public SqlConnection connection;
 
         public MainViewModel()
@@ -61,7 +60,6 @@ namespace Birkesoe_Loebet.ViewModels
             RegisterUser = new RelayCommand(p => OpenRegisterWindow());
             CreateUser = new RelayCommand(p => OpenCreateWindow());
             SetCmd = new RelayCommand(p => SetRoute(Convert.ToDecimal(p)));
-            FindRunner = new RelayCommand(p => GetRunner(), p => CanSearch());
             IsResultList = false;
         }
 
@@ -333,32 +331,6 @@ namespace Birkesoe_Loebet.ViewModels
                     connection.Close();
                 }
             }
-        }
-
-        /// <summary>
-        /// Hoved forfatter: Emil Thomsen
-        /// </summary>
-        private void GetNumberOfRunners() //Angiver længde af Runners table, så vi ved hvad løber_nr vi er nået til.
-        {
-            try
-            {
-                connection.Open();
-                string query = "SELECT COUNT(*) FROM Runners";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    numberOfRunners = (int)command.ExecuteScalar() + 99;
-                }
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                return true;
-            }
-            else return false;
         }
 
         /// <summary>
