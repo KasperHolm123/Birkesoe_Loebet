@@ -57,7 +57,6 @@ namespace Birkesoe_Loebet.ViewModels
                         SqlCommand command = new SqlCommand(query, connection);
                         command.Parameters.Add(CreateParameter("@RunnerID", model.RunnerID, SqlDbType.Int));
                         command.Parameters.Add(CreateParameter("@course", course.ID, SqlDbType.Int));
-                        //command.Parameters.Add(CreateParameter("@StartTime", courseModel.ID, SqlDbType.Int));
                         command.ExecuteNonQuery();
                     }
                 }
@@ -74,6 +73,7 @@ namespace Birkesoe_Loebet.ViewModels
                 }
             }
         }
+
         private void BuildModel()
         {
             model.RunnerID = RunnerID;

@@ -16,12 +16,12 @@ namespace Birkesoe_Loebet.ViewModels
     {
         public event WarningMessage WarningHandler;
         public event PropertyChangedEventHandler PropertyChanged;
-        
-        //Properties bindet til tekst-felter i UI, her kan vi også evt enforce attributes' domæner. Den vil kun registrere brugeren med et gyldigt tlf-nr f.eks
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
+
+        // Private fields
+        private string name = "";
+        private string address = "";
+        private string phoneNumber = "";
+        private string email = "";
 
         private int numberOfRunners;
 
@@ -35,6 +35,29 @@ namespace Birkesoe_Loebet.ViewModels
         {
             CreateUser = new RelayCommand(p => CreateCmd(), p => CanExecute());
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["post"].ConnectionString);
+        }
+
+        // Properties bindet til tekst-felter i UI, her kan vi også evt enforce attributes' domæner.
+        // Den vil kun registrere brugeren med et gyldigt tlf-nr f.eks
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public string Address
+        {
+            get { return address; }
+            set { address = value; }
+        }
+        public string PhoneNumber
+        {
+            get { return phoneNumber; }
+            set { phoneNumber = value; }
+        }
+        public string Email
+        {
+            get { return email; }
+            set { email = value; }
         }
 
         private void CreateCmd()
@@ -139,7 +162,7 @@ namespace Birkesoe_Loebet.ViewModels
 
         public bool CanExecute()
         {
-            if (Name == null || PhoneNumber == null || Address == null || Email == null)
+            if (Name == "" || PhoneNumber == "" || Address == "" || Email == "")
             { 
                 return false; 
             }
